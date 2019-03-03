@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MiniProjet</string>
+
+    <string name="facebook_app_id">796007064090885</string>
+    <string name="fb_login_protocol_scheme">fb796007064090885</string>
+
+    <string name="sign_in_via"> <u>Sign in via</u></string>
+    <string name="title_activity_navigation__drawer">Navigation_Drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
