@@ -7,40 +7,9 @@
     android:background="#5c949c"
     tools:context=".MainActivity">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginBottom="142dp" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="177dp"
-        android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp" />
-
-
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
-        android:layout_width="190dp"
-        android:layout_height="161dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="116dp"
-        android:src="@drawable/icon"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="1dp" />
-
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="186dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -49,6 +18,37 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="32dp" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="189dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="133dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="199dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="190dp"
+        android:layout_height="157dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="111dp"
+        android:src="@drawable/icon"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="1dp" />
 
     <TextView
         android:id="@+id/textView5"
@@ -64,10 +64,19 @@
         android:layout_height="38dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="193dp"
+        android:layout_marginBottom="186dp"
         android:text="@string/sign_in_via"
         android:textColor="#FFFFFF"
         android:textSize="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 
 </RelativeLayout>

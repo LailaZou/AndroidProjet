@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Take_photo">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/Label"
+        android:layout_width="231dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="127dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="292dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:scaleType="centerInside">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/Description"
+        android:layout_width="229dp"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="193dp" />
+
+    <TextView
+        android:id="@+id/Point_interet"
+        android:layout_width="224dp"
+        android:layout_height="42dp"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="You are about to add new location ..."
+        android:textAlignment="center"
+        android:textColor="#5c949c"
+        android:textSize="22dp" />
+
+</RelativeLayout>

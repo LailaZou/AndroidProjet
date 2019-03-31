@@ -25,15 +25,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import Models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
     int RC_SIGN_IN;
     String CurrentLogin="Facebook";
     private FirebaseAuth mAuth;
+    String photoUrl ="";
 
-
+    FirebaseFirestore db ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
          signInButton = findViewById(R.id.sign_in_button);// google button
         mAuth = FirebaseAuth.getInstance();//google
+        db = FirebaseFirestore.getInstance();
 
-
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
         // Initialize Facebook Login button
         mcallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
@@ -119,12 +133,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //onActivityResult method, call callbackManager.onActivityResult
-    // to pass the login results to the LoginManager via callbackManager
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        callbackManager.onActivityResult(requestCode, resultCode, data);
-//    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.v("resultat","onactivity result "+this.CurrentLogin);
@@ -177,8 +186,16 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Authentication succeed with Google ",
                                     Toast.LENGTH_LONG).show();
 
-                              Intent homepage = new Intent(MainActivity.this, Navigation_Drawer.class);
-                             startActivity(homepage);
+                             photoUrl =  user.getPhotoUrl().toString()+"?type=large";
+
+                            Log.v("photoxxxxxxxxxxxxxxxxxx", " "+photoUrl);
+                            GestionUtilisateur(user);
+
+                            Intent homepage = new Intent(MainActivity.this, Navigation_Drawer.class);
+                            homepage.putExtra("photo", photoUrl);
+                            homepage.putExtra("nom", user.getDisplayName());
+
+                            startActivity(homepage);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -216,10 +233,19 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Authentication succeeded.",
-                                    Toast.LENGTH_SHORT).show();
+
+
+                           // String photoUrl = "https://graph.facebook.com/" + user.getProviderData().get(0).getProviderId() + "/picture?type=large";
+                             photoUrl = user.getPhotoUrl().toString();
+
+                            Log.v("photoxxxxxxxxxxxxxxxxxx", " "+photoUrl);
+
+                            GestionUtilisateur(user);
+
                             // Authentification a reussi pour Facebook
                               Intent homepage = new Intent(MainActivity.this, Navigation_Drawer.class);
+                            homepage.putExtra("photo", photoUrl);
+                            homepage.putExtra("nom", user.getDisplayName());
                               startActivity(homepage);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -237,6 +263,72 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
+    public void GestionUtilisateur(final FirebaseUser user ){
+           final User utilisateur=new User();
+
+       db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        //Toast.makeText(MainActivity.this, "size "+task.getResult().size(), Toast.LENGTH_SHORT).show();
+                        Log.d("tag", "size of task: "+task.getResult().size());
+                           if (task.isSuccessful()) {
+                                int count=0;
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.get("id").toString().equals(user.getUid())){
+
+                                        utilisateur.setid(document.get("id").toString());
+                                        utilisateur.setemail(document.get("email").toString());
+                                        utilisateur.setnom( document.get("nom").toString());
+
+
+                                    }else{
+
+                                        if(count+1==task.getResult().size()){
+                                         //   Toast.makeText(MainActivity.this, " doesnt exists ", Toast.LENGTH_SHORT).show();
+                                            // Create a new user with a first and last name
+                                            Map<String, Object> Newuser = new HashMap<>();
+                                            Newuser.put("id",user.getUid() );
+                                            Newuser.put("nom", user.getDisplayName());
+                                            Newuser.put("email", user.getEmail());
+
+
+
+// Add a new document with a generated ID
+                                            db.collection("users")
+                                                    .add(Newuser)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Log.d("tag", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w("tag", "Error adding document", e);
+                                                        }
+                                                    });
+                                        }
+                                        count++;
+
+                                    }
+                                }
+
+
+                        }
+                    }
+                });
+
+
+
+
+        }
+
+
 
 
 }
